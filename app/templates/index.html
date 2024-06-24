@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel ChatBot</title>
+    <title>GO Travel!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -11,29 +11,24 @@
 <body>
     <header>
         <h1>Travel Planner</h1>
-        <button id="dark-mode-toggle">Dark Mode</button>
+        <button id="dark-mode-toggle">Dark/Light</button>
     </header>
     <div id="content">
         <main>
             <div id="map-container">
                 <div id="map"></div>
             </div>
-            <!-- News Headlines -->
             <section id="news-container">
                 <h2>Latest News</h2>
                 <div id="single-news-container">
-                    <!-- First news article will be dynamically inserted here -->
                 </div>
                 <div id="news-articles">
-                    <!-- Remaining news articles will be dynamically inserted here -->
                 </div>
             </section>
         </main>
         <aside>
-            <!-- Weather Widget -->
             <div id="weather-container">
                 <h2>Weather Widget</h2>
-                <!-- Weather info will be dynamically inserted here -->
             </div>
             <div id="chat-container">
                 <div id="header">
@@ -48,7 +43,7 @@
         </aside>
     </div>
     <footer>
-        <p>&copy; 2024 Travel Planner</p>
+        <p>&copy; 2024 GO Travel!</p>
     </footer>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
