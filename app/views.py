@@ -3,6 +3,8 @@
 from flask import Blueprint, render_template, request, jsonify, current_app
 import requests
 import logging
+import datetime
+from .models import WeatherData, NewsData, db
 
 main = Blueprint('main', __name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -75,6 +77,10 @@ def get_weather(location):
                 'description': item['weather'][0]['description']
             }
             forecast.append(day_forecast)
+        weather_data = WeatherData(location=location, timestamp=datetime.datetime.utcnow())
+        weather_data.set_data(forecast)
+        db.session.add(weather_data)
+        db.session.commit()
         return forecast
     logging.debug(f"Failed to fetch weather data, response code: {response.status_code}, response: {response.text}")
     return None
@@ -96,10 +102,11 @@ def get_coordinates(location):
     return 0, 0
 
 def get_news(location):
+    news_data = NewsData.query.filter_by(location=location).first()
+    if news_data and (datetime.datetime.utcnow() - news_data.timestamp).total_seconds() < 3600:
+        return news_data.get_data()
+
     api_key = current_app.config.get('NEWS_API_KEY')
-    if not api_key:
-        logging.error('NEWS_API_KEY is not set')
-        return None
     url = f"https://newsapi.org/v2/everything?q={location}&apiKey={api_key}"
     logging.debug(f"Fetching news for {location} with URL: {url}")
     response = requests.get(url)
@@ -112,6 +119,10 @@ def get_news(location):
                 'description': article['description'],
                 'url': article['url']
             })
+        news_data = NewsData(location=location, timestamp=datetime.datetime.utcnow())
+        news_data.set_data(articles)
+        db.session.add(news_data)
+        db.session.commit()
         return articles
     logging.debug(f"Failed to fetch news data, response code: {response.status_code}, response: {response.text}")
     return None
