@@ -5,38 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel ChatBot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
+    <header>
+        <h1>Travel Planner</h1>
+        <button id="dark-mode-toggle">Dark Mode</button>
+    </header>
+    <div id="content">
+        <main>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+            <section id="news-container">
+                <h2>Latest News</h2>
+                <div id="news-articles">
+                    <!-- News articles will be dynamically inserted here -->
+                </div>
+            </section>
+        </main>
+        <aside>
+            <div id="weather-container">
+                <h2>Weather Widget</h2>
+                <!-- Weather widget will be dynamically inserted here -->
+            </div>
+            <div id="chat-container">
+                <div id="header">
+                    <h2>Travel ChatBot</h2>
+                </div>
+                <div id="chat-box"></div>
+                <div id="input-area">
+                    <input type="text" id="user-input" placeholder="Type a message...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </aside>
     </div>
-    <script>
-        function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
-            const chatBox = document.getElementById('chat-box');
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('message', 'user-message');
-            userMessage.textContent = userInput;
-            chatBox.appendChild(userMessage);
-
-            fetch('/get_response', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const botMessage = document.createElement('div');
-                botMessage.classList.add('message', 'bot-message');
-                botMessage.textContent = data.response;
-                chatBox.appendChild(botMessage);
-                document.getElementById('user-input').value = '';
-            });
-        }
-    </script>
+    <footer>
+        <p>&copy; 2024 Travel Planner</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
