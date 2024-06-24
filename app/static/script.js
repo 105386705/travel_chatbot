@@ -153,7 +153,6 @@ function updateNewsBanner(newsArticles) {
 // Initialize the map
 var map = L.map('map').setView([51.505, -0.09], 10);
 var marker = L.marker([51.505, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
     .openPopup();
 
 var lightTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
@@ -197,16 +196,3 @@ window.onload = function() {
     fetchWeather();
     fetchNews();
 };
-
-// Example: Update the map and marker when a new city is searched
-// Assuming there's an input field with id 'city-input' and a button to trigger the search
-const searchButton = document.getElementById('search-button');
-if (searchButton) {
-    searchButton.addEventListener('click', () => {
-        const city = document.getElementById('city-input').value;
-        fetchWeather(city);
-        fetchNews(city);  // Fetch news based on the city
-    });
-} else {
-    console.warn('Search button not found in the DOM.');
-}
