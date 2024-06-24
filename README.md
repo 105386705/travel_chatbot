@@ -14,10 +14,10 @@ The Travel ChatBot is a web-based application designed to assist travel bloggers
    git clone https://github.com/yourusername/travel_chatbot.git
 
 In powershell navigate to project folder:
-   pip install -r requirements.txt    
-   $env:FLASK_APP = "run.py" 
-   .\venv\Scripts\Activate 
-   python run.py 
+  - pip install -r requirements.txt    
+  - $env:FLASK_APP = "run.py" 
+  - .\venv\Scripts\Activate 
+  - python run.py 
 
 
 Thankyou!
