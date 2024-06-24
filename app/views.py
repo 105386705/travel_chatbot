@@ -25,9 +25,7 @@ def get_response():
         location = user_input.split('in')[-1].strip()
         weather_forecast = get_weather(location)
         if weather_forecast:
-            weather_response = f"Weather forecast for {location}: "
-            for day in weather_forecast:
-                weather_response += f"\n{day['date']}: {day['temp']}°C, {day['description']}"
+            weather_response = f"Here is the weather for {location}: "
             data['response'] = weather_response
             lat, lon = get_coordinates(location)  # Get coordinates for the location
             data['lat'] = lat
@@ -36,7 +34,9 @@ def get_response():
             if news_articles:
                 data['news_articles'] = news_articles
             data['command'] = 'update_all'  # Ensure the command is set to update all
-            data['weather_response'] = weather_response
+            data['weather_response'] = weather_response + "\n".join(
+                [f"{day['date']}: {day['temp']}°C, {day['description']}" for day in weather_forecast]
+            )
         else:
             data['response'] = "I couldn't fetch the weather data for that location."
     elif 'show' in user_input.lower() and 'location' in user_input.lower():
@@ -80,12 +80,19 @@ def get_weather(location):
     return None
 
 def get_coordinates(location):
-    # Dummy implementation, replace with actual geocoding logic
-    if location.lower() == 'london':
-        return 51.5074, -0.1278
-    elif location.lower() == 'melbourne':
-        return -37.8136, 144.9631
-    # Add more locations as needed
+    api_key = current_app.config.get('OPENCAGE_API_KEY')
+    if not api_key:
+        logging.error('OPENCAGE_API_KEY is not set')
+        return 0, 0
+    url = f"https://api.opencagedata.com/geocode/v1/json?q={location}&key={api_key}"
+    logging.debug(f"Fetching coordinates for {location} with URL: {url}")
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if data['results']:
+            coordinates = data['results'][0]['geometry']
+            return coordinates['lat'], coordinates['lng']
+    logging.debug(f"Failed to fetch coordinates, response code: {response.status_code}, response: {response.text}")
     return 0, 0
 
 def get_news(location):
