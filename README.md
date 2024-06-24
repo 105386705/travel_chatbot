@@ -11,7 +11,7 @@ The Travel ChatBot is a web-based application designed to assist travel bloggers
 ## Setup Instructions
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/travel_chatbot.git
+   git clone https://github.com/105386705/travel_chatbot.git
 
 In powershell navigate to project folder:
   - pip install -r requirements.txt    
